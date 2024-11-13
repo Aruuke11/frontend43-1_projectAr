@@ -76,3 +76,57 @@ resetButton.onclick = () => {
     timer = 0; seconds = 0;
     secondsDisplay.textContent = seconds;
 };
+
+
+
+
+// CHARACTERS.JSON
+fetch('../data/characters.json')
+    .then(response => response.json())
+    .then(data => {
+        const characterList = document.querySelector('.characters-list');
+
+        data.forEach(person => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            const img = document.createElement('img');
+            img.src = person.person_photo;
+            img.alt = person.name;
+            const name = document.createElement('h3');
+            name.textContent = person.name;
+            const age = document.createElement('p');
+            age.textContent = `age: ${person.age}`;
+            card.appendChild(img);
+            card.appendChild(name);
+            card.appendChild(age);
+            characterList.appendChild(card);
+        });
+    })
+    .catch(error => console.error('error'));
+
+// ANY JSON
+
+//
+// const button = document.querySelector('any-button');
+// button.onclick = () => {
+//     const xhr = new XMLHttpRequest();
+//     xhr.open('GET', 'http://localhost:63342/project_AR/data/any.json')
+//     xhr.setRequestHeader('Content-type', 'application/json')
+//     xhr.send()
+//     console.log(xhr)
+// }
+
+const button = document.getElementById('any-button');
+button.onclick = () => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:63342/project_AR/data/any.json');
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText);
+            console.log(xhr);
+        } else {
+            console.error(xhr.status);
+        }
+    };
+    xhr.send();
+};
