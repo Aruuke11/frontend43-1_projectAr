@@ -81,9 +81,13 @@ resetButton.onclick = () => {
 
 
 // CHARACTERS.JSON
-fetch('../data/characters.json')
-    .then(response => response.json())
-    .then(data => {
+
+
+const xhr = new XMLHttpRequest();
+xhr.open('GET', '../data/characters.json', true);
+xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
         const characterList = document.querySelector('.characters-list');
 
         data.forEach(person => {
@@ -101,8 +105,11 @@ fetch('../data/characters.json')
             card.appendChild(age);
             characterList.appendChild(card);
         });
-    })
-    .catch(error => console.error('error'));
+    } else if (xhr.readyState === 4) {
+        console.error('error');
+    }
+};
+xhr.send();
 
 // ANY JSON
 
